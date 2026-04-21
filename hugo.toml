@@ -1,0 +1,40 @@
+baseURL = "https://lennykiruthu.xyz/"
+languageCode = "en-us"
+title = "Lenny Kiruthu"
+theme = "PaperMod"
+#theme = "congo"
+
+[params]
+  description = "Building data systems in public."
+  author = "Lenny Kiruthu"
+  github = "https://github.com/lennykiruthu" 
+  email = "" 
+
+[menu]
+  [[menu.main]]
+    name = "Platform"
+    url = "/platform/"
+    weight = 1
+
+  [[menu.main]]
+    name = "Build Log"
+    url = "/building/"
+    weight = 2
+
+  [[menu.main]]
+    name = "Docs"
+    url = "/docs/"
+    weight = 3
+
+[taxonomies]
+  tag = "tags"
+  project = "project"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true  
+
+  [markup.highlight]
+    style = "monokai"
+    lineNos = false

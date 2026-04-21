@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Backend on Lenny Kiruthu</title>
+    <link>http://localhost:1313/tags/backend/</link>
+    <description>Recent content in Backend on Lenny Kiruthu</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 18 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/backend/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Shipping Auth: Why I Built It Myself with FastAPI</title>
+      <link>http://localhost:1313/building/2026-04-18-auth/</link>
+      <pubDate>Sat, 18 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/building/2026-04-18-auth/</guid>
+      <description>I could have used Supabase Auth or Firebase. Here&amp;#39;s why I rolled my own JWT auth with FastAPI instead — and what that decision cost me.</description>
+    </item>
+  </channel>
+</rss>
