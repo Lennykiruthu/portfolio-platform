@@ -12,8 +12,8 @@ theme = "PaperMod"
 
 [menu]
   [[menu.main]]
-    name = "Platform"
-    url = "/platform/"
+    name = "Multi Asset Portfolio Analytics Platform"
+    url = "/multi-asset-portfolio-analytics-platform/"
     weight = 1
 
   [[menu.main]]
