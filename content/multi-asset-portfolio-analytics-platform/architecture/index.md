@@ -1,8 +1,8 @@
----
+<!-- ---
 title: "Architecture"
 description: "The full technical stack — data sources, transformation layer, orchestration, storage, and frontend."
 weight: 1
----
+--- -->
 
 # Architecture
 
@@ -62,6 +62,7 @@ bronze (raw)  →  staging  →  intermediate  →  mart (gold)
 - **`dim_assets`** — Asset dimension table: ticker metadata, sector, asset class.
 
 The DAG flows from `raw_prices` and `raw_fred` (source nodes) through the staging and intermediate layers into the gold marts.
+![alt](/images/dbt_lineage.png)
 
 ---
 
