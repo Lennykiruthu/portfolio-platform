@@ -1,196 +1,242 @@
 <!DOCTYPE html>
-<html lang="en" dir="auto" data-theme="auto">
-
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
-<title>Lenny Kiruthu</title>
-<meta name="keywords" content="">
-<meta name="description" content="
-Architecture
-This page documents the current architecture of the platform. I update it as the system evolves.
-Last updated: April 2026
-
-Stack Overview
-
-  
-      
-          Layer
-          Technology
-          Notes
-      
-  
-  
-      
-          Data Sources
-          yFinance, FRED API
-          Equity prices &#43; macro indicators
-      
-      
-          Storage
-          PostgreSQL
-          Single database, multiple schemas
-      
-      
-          Transformation
-          dbt
-          Staging → intermediate → mart pattern
-      
-      
-          Orchestration
-          Dagster
-          Scheduled jobs &#43; event sensors
-      
-      
-          Auth / API
-          FastAPI
-          JWT-based auth, user management
-      
-      
-          Frontend
-          Streamlit
-          Transaction input &#43; personal dashboards
-      
-      
-          Deployment
-          Docker
-          Compose-based, self-hosted
-      
-  
+<html lang="en-us" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="The full technical stack — data sources, transformation layer, orchestration, storage, and frontend.">
+<title>Architecture</title>
 
 
-Data Sources
-yFinance
-Yahoo Finance is the primary source for daily equity prices. When a user logs a transaction for a ticker the system hasn&rsquo;t seen before, it backfills the full available price history for that ticker into bronze.raw_prices before writing the transaction. This ensures the daily holdings computation has complete data.">
-<meta name="author" content="Lenny Kiruthu">
 <link rel="canonical" href="http://localhost:1313/multi-asset-portfolio-analytics-platform/architecture/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.47e51c7d8489b002361bac156ce9a0a8776d08c5462c2cee95801efafdd90d35.css" integrity="sha256-R&#43;UcfYSJsAI2G6wVbOmgqHdtCMVGLCzulYAe&#43;v3ZDTU=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/multi-asset-portfolio-analytics-platform/architecture/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap">
+
+
+<link rel="stylesheet" href="/scss/style.min.eb47332bbc5977b9a3a236cfd71284f6f4ad16b0330d63c5e4f3ee98ca45b6bb.css"><meta property='og:title' content="Architecture">
+<meta property='og:description' content="The full technical stack — data sources, transformation layer, orchestration, storage, and frontend.">
+<meta property='og:url' content='http://localhost:1313/multi-asset-portfolio-analytics-platform/architecture/'>
+<meta property='og:site_name' content='Lenny Kiruthu'>
+<meta property='og:type' content='article'><meta property='article:section' content='Multi-Asset-Portfolio-Analytics-Platform' />
+<meta name="twitter:title" content="Architecture">
+<meta name="twitter:description" content="The full technical stack — data sources, transformation layer, orchestration, storage, and frontend.">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
         }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-                color-scheme: dark;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .toc {
-                background: var(--entry);
-            }
-        }
-
-    </style>
-</noscript>
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else if (localStorage.getItem("pref-theme") === "light") {
-       document.querySelector("html").dataset.theme = 'light';
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else {
-        document.querySelector("html").dataset.theme = 'light';
-    }
-
+    })();
 </script>
-</head>
-<body id="top">
-    <header class="header">
-    <nav class="header-nav">
-        <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Lenny Kiruthu (Alt + H)">Lenny Kiruthu</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        <figure class="site-avatar">
+                <a href="/">
+                    <img src="/img/pexels-efdal-yildiz-325089-917494.jpg" 
+                        width="3378"
+                        height="2482"
+                        class="site-logo"
+                        loading="lazy"
+                        alt="Avatar">
+                </a>
+                
+            </figure>
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Lenny Kiruthu</a></h1>
+            <h2 class="site-description">Building data systems in public.</h2>
         </div>
-        <ul id="menu" class="menu">
-            <li>
-                <a href="http://localhost:1313/multi-asset-portfolio-analytics-platform/" title="Multi Asset Portfolio Analytics Platform">
-                    <span>Multi Asset Portfolio Analytics Platform</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/building/" title="Build Log">
-                    <span>Build Log</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/docs/" title="Docs">
-                    <span>Docs</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/lennykiruthu'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
 
-<article class="post-single">
-  <header class="post-header">
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://linkedin.com/in/lenny-kiruthu'
+                        target="_blank"
+                        title="LinkedIn"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M8 11v5" />
+  <path d="M8 8v.01" />
+  <path d="M12 16v-5" />
+  <path d="M16 16v-3a2 2 0 1 0 -4 0" />
+  <path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4l0 -10" />
+</svg>
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/multi-asset-portfolio-analytics-platform/' >
+                
+                <span>Multi Asset Portfolio Analytics Platform</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/building/' >
+                
+                <span>Build Log</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/docs/' >
+                
+                <span>Docs</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
     
-    <h1 class="post-title entry-hint-parent">
-      
-    </h1>
-    <div class="post-meta"><span>Lenny Kiruthu</span>
 
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/multi-asset-portfolio-analytics-platform/architecture/">Architecture</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            The full technical stack — data sources, transformation layer, orchestration, storage, and frontend.
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    
+    
+    
+    <footer class="article-meta">
+        
+            <div class="inline-meta">
+                
+
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                    <time class="article-time--reading">
+                        4 minutes read
+                    </time>
+                
+            </div>
+        
+
+        
+
+        
+    </footer>
+    
 </div>
-  </header> 
-  <div class="post-content md-content"><!-- ---
-title: "Architecture"
-description: "The full technical stack — data sources, transformation layer, orchestration, storage, and frontend."
-weight: 1
---- -->
-<h1 id="architecture">Architecture<a hidden class="anchor" aria-hidden="true" href="#architecture">#</a></h1>
-<p>This page documents the current architecture of the platform. I update it as the system evolves.</p>
+
+</header>
+
+    
+
+    <section class="article-content">
+    
+    
+    <h1 id="architecture">Architecture
+</h1><p>This page documents the current architecture of the platform. I update it as the system evolves.</p>
 <p><strong>Last updated:</strong> April 2026</p>
 <hr>
-<h2 id="stack-overview">Stack Overview<a hidden class="anchor" aria-hidden="true" href="#stack-overview">#</a></h2>
-<table>
+<h2 id="stack-overview">Stack Overview
+</h2><div class="table-wrapper"><table>
   <thead>
       <tr>
           <th>Layer</th>
@@ -235,31 +281,31 @@ weight: 1
           <td>Compose-based, self-hosted</td>
       </tr>
   </tbody>
-</table>
+</table></div>
 <hr>
-<h2 id="data-sources">Data Sources<a hidden class="anchor" aria-hidden="true" href="#data-sources">#</a></h2>
-<h3 id="yfinance">yFinance<a hidden class="anchor" aria-hidden="true" href="#yfinance">#</a></h3>
-<p>Yahoo Finance is the primary source for daily equity prices. When a user logs a transaction for a ticker the system hasn&rsquo;t seen before, it backfills the full available price history for that ticker into <code>bronze.raw_prices</code> before writing the transaction. This ensures the daily holdings computation has complete data.</p>
-<h3 id="fred-federal-reserve-economic-data">FRED (Federal Reserve Economic Data)<a hidden class="anchor" aria-hidden="true" href="#fred-federal-reserve-economic-data">#</a></h3>
-<p>Macroeconomic indicators are pulled monthly from the FRED API into <code>bronze.raw_fred</code>. These are used downstream to classify macro regimes (e.g. expansionary vs. contractionary) which are layered onto portfolio performance charts as context.</p>
+<h2 id="data-sources">Data Sources
+</h2><h3 id="yfinance">yFinance
+</h3><p>Yahoo Finance is the primary source for daily equity prices. When a user logs a transaction for a ticker the system hasn&rsquo;t seen before, it backfills the full available price history for that ticker into <code>bronze.raw_prices</code> before writing the transaction. This ensures the daily holdings computation has complete data.</p>
+<h3 id="fred-federal-reserve-economic-data">FRED (Federal Reserve Economic Data)
+</h3><p>Macroeconomic indicators are pulled monthly from the FRED API into <code>bronze.raw_fred</code>. These are used downstream to classify macro regimes (e.g. expansionary vs. contractionary) which are layered onto portfolio performance charts as context.</p>
 <hr>
-<h2 id="dbt-transformation-layer">dbt Transformation Layer<a hidden class="anchor" aria-hidden="true" href="#dbt-transformation-layer">#</a></h2>
-<p>The dbt project follows a standard three-layer medallion pattern inside a <code>default</code> schema group:</p>
+<h2 id="dbt-transformation-layer">dbt Transformation Layer
+</h2><p>The dbt project follows a standard three-layer medallion pattern inside a <code>default</code> schema group:</p>
 <pre tabindex="0"><code>bronze (raw)  →  staging  →  intermediate  →  mart (gold)
-</code></pre><h3 id="staging-models">Staging models<a hidden class="anchor" aria-hidden="true" href="#staging-models">#</a></h3>
-<ul>
+</code></pre><h3 id="staging-models">Staging models
+</h3><ul>
 <li><strong><code>stg_raw_prices</code></strong> — Cleans and types the raw yFinance price data.</li>
 <li><strong><code>stg_fred_macro</code></strong> — Cleans and types the raw FRED indicator data.</li>
 <li><strong><code>stg_transactions</code></strong> — Cleans user-submitted transaction records.</li>
 </ul>
-<h3 id="intermediate-models">Intermediate models<a hidden class="anchor" aria-hidden="true" href="#intermediate-models">#</a></h3>
-<ul>
+<h3 id="intermediate-models">Intermediate models
+</h3><ul>
 <li><strong><code>int_daily_holdings</code></strong> — Reconstructs each user&rsquo;s holdings on every calendar day based on their transaction history. This is the core computational model.</li>
 <li><strong><code>fct_daily_returns</code></strong> — Joins daily holdings against prices to produce daily return figures per user, per asset.</li>
 <li><strong><code>fct_macro_regimes</code></strong> — Classifies each date into a macro regime using the FRED indicators.</li>
 </ul>
-<h3 id="mart-models-gold-layer">Mart models (gold layer)<a hidden class="anchor" aria-hidden="true" href="#mart-models-gold-layer">#</a></h3>
-<ul>
+<h3 id="mart-models-gold-layer">Mart models (gold layer)
+</h3><ul>
 <li><strong><code>gold_macro_context</code></strong> — Macro regime data formatted for dashboard consumption.</li>
 <li><strong><code>gold_p_timeseries</code></strong> — Portfolio-level daily time series (value, returns, drawdown) per user.</li>
 <li><strong><code>gold__performance</code></strong> — Aggregate performance metrics per user.</li>
@@ -267,36 +313,36 @@ weight: 1
 <li><strong><code>dim_assets</code></strong> — Asset dimension table: ticker metadata, sector, asset class.</li>
 </ul>
 <p>The DAG flows from <code>raw_prices</code> and <code>raw_fred</code> (source nodes) through the staging and intermediate layers into the gold marts.
-<img alt="alt" loading="lazy" src="/multi-asset-portfolio-analytics-platform/architecture/images/dbt_lineage.png"></p>
+<img alt="alt" class="gallery-image" data-flex-basis="900px" data-flex-grow="375" height="490" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="/multi-asset-portfolio-analytics-platform/architecture/images/dbt_lineage.png" srcset="/multi-asset-portfolio-analytics-platform/architecture/images/dbt_lineage_hu_e2a54f0250286181.png 800w, /multi-asset-portfolio-analytics-platform/architecture/images/dbt_lineage_hu_3d115b57b7dcd10d.png 1600w, /multi-asset-portfolio-analytics-platform/architecture/images/dbt_lineage.png 1838w" width="1838"></p>
 <hr>
-<h2 id="orchestration-dagster">Orchestration (Dagster)<a hidden class="anchor" aria-hidden="true" href="#orchestration-dagster">#</a></h2>
-<p>Three jobs/sensors manage pipeline execution:</p>
-<h3 id="daily_market_data_ingestion"><code>daily_market_data_ingestion</code><a hidden class="anchor" aria-hidden="true" href="#daily_market_data_ingestion">#</a></h3>
-<ul>
+<h2 id="orchestration-dagster">Orchestration (Dagster)
+</h2><p>Three jobs/sensors manage pipeline execution:</p>
+<h3 id="daily_market_data_ingestion"><code>daily_market_data_ingestion</code>
+</h3><ul>
 <li><strong>Schedule:</strong> 06:00 PM UTC, Monday–Friday</li>
 <li>Fetches updated prices from yFinance for all tickers in the system, then triggers a full dbt run to refresh all downstream models.</li>
 </ul>
-<h3 id="monthly_fred_macro_refresh"><code>monthly_fred_macro_refresh</code><a hidden class="anchor" aria-hidden="true" href="#monthly_fred_macro_refresh">#</a></h3>
-<ul>
+<h3 id="monthly_fred_macro_refresh"><code>monthly_fred_macro_refresh</code>
+</h3><ul>
 <li><strong>Schedule:</strong> 06:00 AM UTC, 1st of each month</li>
 <li>Pulls updated FRED indicators and refreshes the macro context models.</li>
 </ul>
-<h3 id="transaction_sensor"><code>transaction_sensor</code><a hidden class="anchor" aria-hidden="true" href="#transaction_sensor">#</a></h3>
-<ul>
+<h3 id="transaction_sensor"><code>transaction_sensor</code>
+</h3><ul>
 <li><strong>Type:</strong> Standard sensor (event-driven)</li>
 <li>Monitors for new transactions written to <code>bronze.transactions</code>. When triggered, it backfills price history for any new tickers and reruns the affected downstream models.</li>
 </ul>
 <hr>
-<h2 id="storage-postgresql">Storage (PostgreSQL)<a hidden class="anchor" aria-hidden="true" href="#storage-postgresql">#</a></h2>
-<p>A single Postgres instance with a schema-per-layer approach:</p>
+<h2 id="storage-postgresql">Storage (PostgreSQL)
+</h2><p>A single Postgres instance with a schema-per-layer approach:</p>
 <ul>
 <li><code>bronze</code> — Raw ingested data (managed by Dagster/ingestion scripts)</li>
 <li><code>default</code> — dbt-managed transformed models</li>
 <li><code>public</code> — Application tables managed by FastAPI (users, sessions)</li>
 </ul>
 <hr>
-<h2 id="auth--api-fastapi">Auth &amp; API (FastAPI)<a hidden class="anchor" aria-hidden="true" href="#auth--api-fastapi">#</a></h2>
-<p>A FastAPI service handles:</p>
+<h2 id="auth--api-fastapi">Auth &amp; API (FastAPI)
+</h2><p>A FastAPI service handles:</p>
 <ul>
 <li>User registration and login</li>
 <li>JWT token issuance and validation</li>
@@ -304,16 +350,16 @@ weight: 1
 <li>Serving portfolio data to the Streamlit frontend</li>
 </ul>
 <hr>
-<h2 id="frontend-streamlit">Frontend (Streamlit)<a hidden class="anchor" aria-hidden="true" href="#frontend-streamlit">#</a></h2>
-<p>The Streamlit app is the user-facing interface. It has two main sections:</p>
+<h2 id="frontend-streamlit">Frontend (Streamlit)
+</h2><p>The Streamlit app is the user-facing interface. It has two main sections:</p>
 <ol>
 <li><strong>Transaction Ledger</strong> — Log BUY/SELL transactions with ticker, quantity, price, and date. New tickers are validated and backfilled automatically.</li>
 <li><strong>Portfolio Analytics</strong> — Personal dashboard showing portfolio performance, macro context overlays, and per-ticker KPIs. <em>(In active development as of April 2026.)</em></li>
 </ol>
 <p>Authentication is handled via the FastAPI service — Streamlit calls the API on login and stores the JWT in session state.</p>
 <hr>
-<h2 id="deployment-docker">Deployment (Docker)<a hidden class="anchor" aria-hidden="true" href="#deployment-docker">#</a></h2>
-<p>The full stack runs as a Docker Compose application:</p>
+<h2 id="deployment-docker">Deployment (Docker)
+</h2><p>The full stack runs as a Docker Compose application:</p>
 <ul>
 <li><code>db</code> — PostgreSQL</li>
 <li><code>api</code> — FastAPI service</li>
@@ -322,100 +368,110 @@ weight: 1
 </ul>
 <p>Everything is containerised and runs on a single host. Persistent volumes are used for the database. The plan is to move this to a cloud VM (AWS EC2 or DigitalOcean Droplet) for persistent public hosting.</p>
 <hr>
-<h2 id="whats-missing--in-progress">What&rsquo;s Missing / In Progress<a hidden class="anchor" aria-hidden="true" href="#whats-missing--in-progress">#</a></h2>
-<ul>
+<h2 id="whats-missing--in-progress">What&rsquo;s Missing / In Progress
+</h2><ul>
 <li><strong>Streamlit analytics dashboard</strong> — Currently migrating from Apache Superset. The transaction ledger is done; the analytics tab is being built.</li>
 <li><strong>African market data sources</strong> — The long-term data source expansion goal. No timeline yet.</li>
 <li><strong>Multi-user scaling</strong> — The schema and models support multiple users already; the deployment doesn&rsquo;t yet handle scale gracefully.</li>
 <li><strong>CI/CD</strong> — Currently manual deploys. Will add GitHub Actions.</li>
 </ul>
 
+</section>
 
-  </div>
 
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-  </footer>
-</article>
-    </main>
+    <footer class="article-meta article-footer">
     
-<footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:1313/">Lenny Kiruthu</a></span> · 
 
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
-        <polyline points="17 11 12 6 7 11"></polyline>
-        <polyline points="17 18 12 13 7 18"></polyline>
-    </svg>
-</a>
+    </footer>
 
-<script>
-    let menu = document.getElementById('menu');
-    if (menu) {
+
+    
+</article>
+
+    
+
+    
+
+     
+    
         
-        const scrollPosition = localStorage.getItem("menu-scroll-position");
-        if (scrollPosition) {
-            menu.scrollLeft = parseInt(scrollPosition, 10);
-        }
-        
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
+
+        <div class="disqus-container">
+    
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
     }
+</style>
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
 <script>
-    var toplink = document.getElementById("top-link");
-    window.onscroll = function () {
-        const scrollThreshold = window.innerHeight;
-        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
-            toplink.classList.remove("hidden");
-        } else {
-            toplink.classList.add("hidden");
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        const html = document.querySelector("html");
-        if (html.dataset.theme === "dark") {
-            html.dataset.theme = 'light';
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            html.dataset.theme = 'dark';
-            localStorage.setItem("pref-theme", 'dark');
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
         }
     })
-
 </script>
-</body>
 
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Lenny Kiruthu
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="4.0.1">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+
+
+
+<script type="module">
+    import gallery from '\/ts\/gallery.js';
+
+    const articleContent = document.querySelector('.article-content');
+    const shouldLoad = articleContent && (articleContent.querySelectorAll('figure').length > 0 || articleContent.querySelectorAll('img.gallery-image').length > 0);
+    
+    if (shouldLoad) {
+        gallery(articleContent);
+
+        const PhotoSwipeLightbox = (await import("https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js")).default;
+        const styleHref = "https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe.css";
+
+        const styleTag = document.createElement('link');
+        styleTag.rel = 'stylesheet';
+        styleTag.href = styleHref;
+        document.head.appendChild(styleTag);
+
+        const lightbox = new PhotoSwipeLightbox({
+            gallerySelector: '.article-content',
+            childSelector: 'figure a.image-link',
+            pswpModule: () => import("https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js")
+        });
+        lightbox.init();
+    }
+</script>
+
+    
+
+            </main>
+        </div>
+        
+<script type="text/javascript" src="/ts/main.2ceeeb1cfe125d6b61e920b5268d1dc4c6f98d92156e6bb765697da536f121d7.js" defer></script>
+
+
+    </body>
 </html>

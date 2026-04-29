@@ -1,14 +1,17 @@
 baseURL = "https://lennykiruthu.xyz/"
 languageCode = "en-us"
 title = "Lenny Kiruthu"
-theme = "PaperMod"
-#theme = "congo"
+theme = "hugo-theme-stack"
 
 [params]
   description = "Building data systems in public."
   author = "Lenny Kiruthu"
-  github = "https://github.com/lennykiruthu" 
-  email = "" 
+  github = "https://github.com/lennykiruthu"
+  email = ""
+
+  [params.sidebar]
+    subtitle = "Building data systems in public."
+    avatar = "img/pexels-efdal-yildiz-325089-917494.jpg"
 
 [menu]
   [[menu.main]]
@@ -26,6 +29,22 @@ theme = "PaperMod"
     url = "/docs/"
     weight = 3
 
+  [[menu.social]]
+    identifier = "github"
+    name = "GitHub"
+    url = "https://github.com/lennykiruthu"
+    [menu.social.params]
+      icon = "brand-github"
+      newTab = true
+
+  [[menu.social]]
+    identifier = "linkedin"
+    name = "LinkedIn"
+    url = "https://linkedin.com/in/lenny-kiruthu"
+    [menu.social.params]
+      icon = "brand-linkedin"
+      newTab = true    
+
 [taxonomies]
   tag = "tags"
   project = "project"
@@ -33,7 +52,7 @@ theme = "PaperMod"
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
-      unsafe = true  
+      unsafe = true
 
   [markup.highlight]
     style = "monokai"

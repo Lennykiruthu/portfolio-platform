@@ -1,8 +1,8 @@
-<!-- ---
+---
 title: "Architecture"
 description: "The full technical stack — data sources, transformation layer, orchestration, storage, and frontend."
 weight: 1
---- -->
+---
 
 # Architecture
 

@@ -20,3 +20,5 @@ This site is where I document what I'm building, why I made certain decisions, a
 Right now I'm focused on global equities and macro data. But the real goal is African market data — equities, fixed income, currencies, commodities across the continent. The infrastructure and the methodology I'm building today is designed to scale there.
 
 If you're working on something similar, or you're interested in what I'm building, I'd genuinely love to hear from you.
+
+
