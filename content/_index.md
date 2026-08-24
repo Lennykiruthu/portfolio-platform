@@ -12,8 +12,6 @@ This site is where I document what I'm building, why I made certain decisions, a
 ## What's here
 
 - **[Multi Asset Portfolio Analytics Platfom](/multi-asset-portfolio-analytics-platform/)** — A deep dive into my flagship project: a self-hosted portfolio analytics platform built on real infrastructure. (AWS, dbt, dagster, docker, postgres and streamlit)
-- **[Build Log](/building/)** — Release notes, decisions, dead ends, and progress updates posted as I ship.
-- **[Docs](/docs/)** — User documentation for anyone who ends up using the platform.
 
 ## The longer ambition
 
