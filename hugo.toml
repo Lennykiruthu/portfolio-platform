@@ -19,16 +19,6 @@ theme = "hugo-theme-stack"
     url = "/multi-asset-portfolio-analytics-platform/"
     weight = 1
 
-  [[menu.main]]
-    name = "Build Log"
-    url = "/building/"
-    weight = 2
-
-  [[menu.main]]
-    name = "Docs"
-    url = "/docs/"
-    weight = 3
-
   [[menu.social]]
     identifier = "github"
     name = "GitHub"
