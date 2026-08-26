@@ -1,4 +1,12 @@
 {{ define "main" }}
+    <section class="article-list">
+    {{ range .Site.Home.Sections.ByWeight }}
+        {{ if ne .Section "page" }}
+            {{ partial "article-list/default" . }}
+        {{ end }}
+    {{ end }}
+    </section>
+
     {{- with .Content -}}
         <div class="article-content">
             {{ . }}

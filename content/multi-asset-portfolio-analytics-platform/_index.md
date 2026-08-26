@@ -1,6 +1,7 @@
 ---
 title: "Multi Asset Portfolio Analytics"
 description: "A self-hosted portfolio analytics platform — what it is, how it works, and where it's going."
+image: "thumbnail.png"
 weight: 1
 ---
 
@@ -17,8 +18,3 @@ It's not a SaaS product yet and is lacking many data sources to be a transformat
 - **Macroeconomic context** — Federal Reserve economic data (FRED) is used to classify macro regimes, which are layered onto portfolio performance charts.
 - **Dashboarding** — Time series performance, KPIs, and holding summaries broken down by ticker.
 
----
-## Sections
-
-- [Architecture](/multi-asset-portfolio-analytics-platform/architecture/) — The full stack, the DAG, and why I made the decisions I did.
-- [Getting Started](/multi-asset-portfolio-analytics-platform/getting-started/) — How to create an account and start logging transactions.

@@ -9,16 +9,23 @@ theme = "hugo-theme-stack"
   github = "https://github.com/lennykiruthu"
   email = ""
 
+  [params.colorScheme]
+    toggle = true
+    default = "auto"
+
   [params.sidebar]
     subtitle = "Building data systems in public."
     avatar = "img/pexels-efdal-yildiz-325089-917494.jpg"
 
 [menu]
   [[menu.main]]
-    name = "Multi Asset Portfolio Analytics Platform"
-    url = "/multi-asset-portfolio-analytics-platform/"
+    identifier = "home"
+    name = "Home"
+    url = "/"
     weight = 1
-
+    [menu.main.params]
+      icon = "home"
+      
   [[menu.social]]
     identifier = "github"
     name = "GitHub"
