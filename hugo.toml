@@ -17,6 +17,10 @@ theme = "hugo-theme-stack"
     subtitle = "Building data systems in public."
     avatar = "img/pexels-efdal-yildiz-325089-917494.jpg"
 
+  [params.widgets]
+    [[params.widgets.page]]
+      type = "subsections"    
+
 [menu]
   [[menu.main]]
     identifier = "home"
@@ -25,7 +29,7 @@ theme = "hugo-theme-stack"
     weight = 1
     [menu.main.params]
       icon = "home"
-      
+
   [[menu.social]]
     identifier = "github"
     name = "GitHub"

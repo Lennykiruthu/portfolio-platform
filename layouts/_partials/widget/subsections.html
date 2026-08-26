@@ -1,0 +1,36 @@
+{{- $section := .Context.CurrentSection -}}
+{{- $subsections := $section.Sections -}}
+{{- $siblingPages := where $section.RegularPages "RelPermalink" "!=" .Context.RelPermalink -}}
+{{- $hasContent := gt (len $subsections) 0 -}}
+
+{{- if $hasContent -}}
+    <section class="widget archives">
+        <div class="widget-icon">
+            {{ partial "helper/icon" "categories" }}
+        </div>
+        <h2 class="widget-title section-title">
+            {{ T "widget.subsections.title" | default "In this project" }}
+        </h2>
+
+        <div class="widget-archive--list">
+            {{ range $subsections.ByWeight }}
+                <div class="archives-year">
+                    <a href="{{ .RelPermalink }}">
+                        <span class="year">{{ .Title }}</span>
+                        {{ with .Pages }}
+                            <span class="count">{{ len . }}</span>
+                        {{ end }}
+                    </a>
+                </div>
+            {{ end }}
+
+            {{ range $siblingPages.ByWeight }}
+                <div class="archives-year">
+                    <a href="{{ .RelPermalink }}">
+                        <span class="year">{{ .Title }}</span>
+                    </a>
+                </div>
+            {{ end }}
+        </div>
+    </section>
+{{- end -}}
