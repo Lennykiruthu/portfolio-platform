@@ -1,0 +1,10 @@
+# Hugo build output
+public/
+resources/_gen/
+
+# Hugo internal
+.hugo_build.lock
+
+# OS/editor cruft
+.DS_Store
+*.swp
