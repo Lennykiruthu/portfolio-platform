@@ -2,7 +2,7 @@
 title: "Multi Asset Portfolio Analytics"
 description: "A self-hosted portfolio analytics platform — what it is, how it works, and where it's going."
 image: "thumbnail.png"
-weight: 1
+weight: 2
 ---
 
 This is a self-hosted portfolio analytics platform I built from scratch. It lets anyone who's created an account track investment transactions, compute daily portfolio performance, and layer in macroeconomic context from the Federal Reserve.
