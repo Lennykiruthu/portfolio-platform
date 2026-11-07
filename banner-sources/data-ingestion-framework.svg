@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 500" width="2000" height="500" role="img" aria-label="Data Ingestion Framework">
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1 L9 5 L1 9 Z" fill="#d9b8bb"/></marker><pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#34161a" stroke-width="1"/></pattern></defs>
+<rect width="2000" height="500" fill="#240d10"/><rect width="2000" height="500" fill="url(#g)" opacity="0.7"/>
+<rect x="0" y="0" width="14" height="500" fill="#ff7a6b"/>
+<text x="90" y="205" font-family="Georgia, 'DejaVu Serif', 'Times New Roman', serif" font-size="56" font-weight="700" fill="#f6eeee">Data Ingestion</text>
+<text x="90" y="275" font-family="Georgia, 'DejaVu Serif', 'Times New Roman', serif" font-size="56" font-weight="700" fill="#f6eeee">Framework</text>
+<text x="90" y="345" font-family="'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="28" fill="#d9b8bb">Raw, traceable, observable ingestion.</text>
+<line x1="1113" y1="225" x2="1141" y2="225" stroke="#d9b8bb" stroke-width="3" marker-end="url(#a)"/>
+<line x1="1379" y1="225" x2="1407" y2="225" stroke="#d9b8bb" stroke-width="3" marker-end="url(#a)"/>
+<line x1="1645" y1="225" x2="1673" y2="225" stroke="#d9b8bb" stroke-width="3" marker-end="url(#a)"/>
+<line x1="995" y1="310" x2="995" y2="385" stroke="#7a3a42" stroke-width="3" stroke-dasharray="6 7"/>
+<line x1="1261" y1="310" x2="1261" y2="385" stroke="#f2b84b" stroke-width="3" stroke-dasharray="6 7"/>
+<line x1="1527" y1="335" x2="1527" y2="385" stroke="#7a3a42" stroke-width="3" stroke-dasharray="6 7"/>
+<line x1="1793" y1="310" x2="1793" y2="385" stroke="#7a3a42" stroke-width="3" stroke-dasharray="6 7"/>
+<rect x="880" y="140" width="230" height="170" rx="12" fill="#3a171c" stroke="#7a3a42" stroke-width="2.5"/>
+<text x="995" y="192" text-anchor="middle" font-family="Georgia, 'DejaVu Serif', 'Times New Roman', serif" font-size="30" font-weight="700" fill="#f6eeee">Sources</text>
+<text x="995" y="237" text-anchor="middle" font-family="'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="22" fill="#d9b8bb">FRED today</text>
+<text x="995" y="267" text-anchor="middle" font-family="'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="22" fill="#d9b8bb">more to come</text>
+<rect x="1146" y="140" width="230" height="170" rx="12" fill="#3a171c" stroke="#7a3a42" stroke-width="2.5"/>
+<text x="1261" y="192" text-anchor="middle" font-family="Georgia, 'DejaVu Serif', 'Times New Roman', serif" font-size="30" font-weight="700" fill="#f6eeee">Hash check</text>
+<text x="1261" y="237" text-anchor="middle" font-family="'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="22" fill="#d9b8bb">content hash</text>
+<text x="1261" y="267" text-anchor="middle" font-family="'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="22" fill="#d9b8bb">skip repeats</text>
+<rect x="1412" y="115" width="230" height="220" rx="12" fill="#521d23" stroke="#ff7a6b" stroke-width="5"/>
+<text x="1527" y="182" text-anchor="middle" font-family="Georgia, 'DejaVu Serif', 'Times New Roman', serif" font-size="36" font-weight="700" fill="#ff7a6b">Raw</text>
+<text x="1527" y="236" text-anchor="middle" font-family="'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="24" fill="#f6eeee">append-only</text>
+<text x="1527" y="270" text-anchor="middle" font-family="'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="24" fill="#f6eeee">fully traceable</text>
+<rect x="1678" y="140" width="230" height="170" rx="12" fill="#3a171c" stroke="#7a3a42" stroke-width="2.5"/>
+<text x="1793" y="192" text-anchor="middle" font-family="Georgia, 'DejaVu Serif', 'Times New Roman', serif" font-size="30" font-weight="700" fill="#f6eeee">Views</text>
+<text x="1793" y="237" text-anchor="middle" font-family="'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="22" fill="#d9b8bb">read-only role</text>
+<text x="1793" y="267" text-anchor="middle" font-family="'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="22" fill="#d9b8bb">for consumers</text>
+<rect x="880" y="385" width="1028" height="60" rx="12" fill="#3a171c" stroke="#7a3a42" stroke-width="2.5"/>
+<text x="1394" y="424" text-anchor="middle" font-family="'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="24" fill="#d9b8bb">Ops: run metrics, failure sensor, health dashboard</text>
+</svg>

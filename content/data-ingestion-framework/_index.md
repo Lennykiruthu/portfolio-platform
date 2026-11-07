@@ -1,7 +1,7 @@
 ---
 title: "Data Ingestion Framework"
 description: "A Dagster and Postgres framework for landing public data sources reliably — raw, traceable, and observable."
-image: "thumbnail.svg"
+image: "thumbnail.png"
 weight: 1
 ---
 

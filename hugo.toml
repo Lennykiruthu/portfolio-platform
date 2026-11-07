@@ -15,7 +15,7 @@ theme = "hugo-theme-stack"
 
   [params.sidebar]
     subtitle = "Building data systems in public."
-    avatar = "img/pexels-efdal-yildiz-325089-917494.jpg"
+    avatar = "img/avatar.jpg"
 
   [params.widgets]
     [[params.widgets.page]]

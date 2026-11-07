@@ -1,6 +1,41 @@
-.article-content {
-    color: white;
+/* ---------- Colour palette ---------- */
+
+:root {
+  --accent-color: #C0392B;          /* light mode */
+  --accent-color-darker: #A32F23;
+  --accent-color-text: #fff;
 }
+
+:root[data-scheme="dark"] {
+  --accent-color: #FF7A6B;          /* dark mode */
+  --accent-color-darker: #E8604F;
+  --accent-color-text: #1f1517;
+
+  /* Optional warm tint for dark mode. Delete this group to go back to Stack's neutral greys. */
+  --body-background: #2a2022;
+  --card-background: #362a2d;
+  --card-background-selected: #402f33;
+}
+
+/* ---------- Banners and card images ---------- */
+
+/* Home page cards: show the whole 4:1 banner instead of cropping it */
+.article-image img {
+  height: auto;
+  aspect-ratio: 4 / 1;
+  object-fit: contain;
+}
+
+/* Project page banner (added in each project's list.html) */
+.section-banner {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+/* ---------- Project call-to-action cards (recoloured from purple) ---------- */
 
 .project-cta-list {
   display: flex;
@@ -16,17 +51,17 @@
   min-height: 220px;
   padding: 3rem 2.5rem;
   border-radius: 16px;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), var(--card-background, #1e1e1e));
-  border: 1.5px solid var(--primary-color, #7c3aed);
+  background: linear-gradient(135deg, rgba(192, 57, 43, 0.15), var(--card-background, #1e1e1e));
+  border: 1.5px solid var(--accent-color);
   text-decoration: none;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
-  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.1);
+  box-shadow: 0 4px 20px rgba(192, 57, 43, 0.1);
 }
 
 .project-cta:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 28px rgba(124, 58, 237, 0.2);
-  border-color: var(--primary-color, #7c3aed);
+  box-shadow: 0 8px 28px rgba(192, 57, 43, 0.2);
+  border-color: var(--accent-color);
 }
 
 .project-cta__thumb {
@@ -52,5 +87,40 @@
 .project-cta__link {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--primary-color, #7c3aed);
+  color: var(--accent-color);
+}
+
+/* Readable article text in both colour modes */
+.article-content,
+.article-content p,
+.article-content li,
+.article-content strong,
+.article-content b,
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6,
+.article-content td,
+.article-content th,
+.article-content blockquote {
+  color: #2b1d20;                 /* light mode: near-black on white */
+}
+
+:root[data-scheme="dark"] .article-content,
+:root[data-scheme="dark"] .article-content p,
+:root[data-scheme="dark"] .article-content li,
+:root[data-scheme="dark"] .article-content strong,
+:root[data-scheme="dark"] .article-content b,
+:root[data-scheme="dark"] .article-content h1,
+:root[data-scheme="dark"] .article-content h2,
+:root[data-scheme="dark"] .article-content h3,
+:root[data-scheme="dark"] .article-content h4,
+:root[data-scheme="dark"] .article-content h5,
+:root[data-scheme="dark"] .article-content h6,
+:root[data-scheme="dark"] .article-content td,
+:root[data-scheme="dark"] .article-content th,
+:root[data-scheme="dark"] .article-content blockquote {
+  color: #eadcdd;                 /* dark mode: warm off-white */
 }

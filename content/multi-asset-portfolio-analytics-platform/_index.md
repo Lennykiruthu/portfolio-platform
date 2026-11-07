@@ -1,7 +1,7 @@
 ---
 title: "Multi Asset Portfolio Analytics"
 description: "A self-hosted portfolio analytics platform — what it is, how it works, and where it's going."
-image: "thumbnail.png"
+image: "thumbnail_002.png"
 weight: 2
 ---
 
